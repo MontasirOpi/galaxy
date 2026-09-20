@@ -1,0 +1,21 @@
+{
+  "name": "cosmic-odyssey-astronomy-portal",
+  "version": "2.0.0",
+  "description": "Interactive 3D Solar System & Photorealistic Sagittarius A* Black Hole Simulator with General Relativity Visualization",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "astronomy",
+    "threejs",
+    "blackhole",
+    "solar-system",
+    "webgl",
+    "space",
+    "general-relativity"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}
