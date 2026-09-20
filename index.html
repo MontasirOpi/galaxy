@@ -256,6 +256,74 @@
     }
     .extra-span { color: #cbd5e1; }
 
+    /* NASA Deep Space Telemetry HUD */
+    .nasa-telemetry-hud {
+      background: rgba(3, 7, 24, 0.88);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem;
+      margin: 0.75rem 0;
+      box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.08);
+    }
+    .telemetry-hud-head {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;
+    }
+    .telemetry-hud-title {
+      font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+      color: var(--cyan-neon); letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .live-rec-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #10b981;
+      box-shadow: 0 0 8px #10b981; animation: livePulse 1.5s infinite;
+    }
+    @keyframes livePulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+    .telemetry-dsn-tag {
+      font-family: var(--font-mono); font-size: 0.62rem; color: #a7f3d0;
+      background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.12rem 0.4rem; border-radius: 4px;
+    }
+    .telemetry-hud-metrics {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;
+    }
+    .t-metric {
+      background: rgba(10, 19, 45, 0.7); border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px; padding: 0.35rem 0.5rem;
+    }
+    .t-label {
+      display: block; font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase;
+    }
+    .t-value {
+      display: block; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: #38bdf8; margin-top: 0.1rem;
+    }
+    .telemetry-hud-status {
+      margin-top: 0.45rem; font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted);
+      border-top: 1px dashed rgba(255, 255, 255, 0.08); padding-top: 0.35rem; line-height: 1.3;
+    }
+
+    /* Epoch Scrubber Controls */
+    .epoch-control-group {
+      display: flex; align-items: center; gap: 0.5rem; background: rgba(4, 9, 25, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 0.32rem 0.75rem;
+    }
+    .epoch-lbl { font-family: var(--font-mono); font-size: 0.7rem; color: var(--cyan-neon); font-weight: 700; }
+    .epoch-val { font-family: var(--font-mono); font-size: 0.75rem; color: #fff; font-weight: 700; min-width: 50px; }
+    .epoch-slider {
+      -webkit-appearance: none; appearance: none; width: 85px; height: 5px; border-radius: 3px;
+      background: linear-gradient(90deg, #38bdf8, #a855f7); outline: none; cursor: pointer;
+    }
+    .epoch-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%;
+      background: #fff; box-shadow: 0 0 8px var(--cyan-neon); cursor: pointer; border: 2px solid #030814;
+    }
+    .epoch-btn {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1; font-family: var(--font-mono); font-size: 0.66rem; padding: 0.18rem 0.45rem;
+      border-radius: 5px; cursor: pointer; transition: var(--transition-smooth); white-space: nowrap;
+    }
+    .epoch-btn:hover, .epoch-btn.active {
+      background: var(--cyan-neon); color: #030814; font-weight: 700; border-color: var(--cyan-neon);
+    }
+
     /* Tier 3: Planet & Moons Quick Action Button */
     .tier-toggle-btn {
       width: 100%; margin-top: 0.8rem; padding: 0.55rem 1rem;
@@ -967,6 +1035,39 @@
             <div class="m-val" id="manifestTemp">15°C (288 K)</div>
           </div>
         </div>
+
+        <!-- Live NASA Mission Control Telemetry Box -->
+        <div class="nasa-telemetry-hud" id="nasaTelemetryHud">
+          <div class="telemetry-hud-head">
+            <div class="telemetry-hud-title">
+              <span class="live-rec-dot"></span>
+              <span id="lblTelemetryHudTitle">NASA DEEP SPACE TELEMETRY</span>
+            </div>
+            <span class="telemetry-dsn-tag">DSN ONLINE</span>
+          </div>
+          <div class="telemetry-hud-metrics">
+            <div class="t-metric">
+              <span class="t-label" id="lblLiveLightDelay">Radio Delay (আলোর গতি বিলম্ব)</span>
+              <span class="t-value" id="valLiveLightDelay">00m 00s</span>
+            </div>
+            <div class="t-metric">
+              <span class="t-label" id="lblLiveDistEarth">Range to Earth (দূরত্ব)</span>
+              <span class="t-value" id="valLiveDistEarth">1.00 AU</span>
+            </div>
+            <div class="t-metric">
+              <span class="t-label" id="lblLiveOrbitalSpeed">Orbital Speed (কক্ষপথ বেগ)</span>
+              <span class="t-value" id="valLiveOrbitalSpeed">29.78 km/s</span>
+            </div>
+            <div class="t-metric">
+              <span class="t-label" id="lblLiveEscapeSpeed">Escape Velocity (মুক্তিবেগ)</span>
+              <span class="t-value" id="valLiveEscapeSpeed">11.19 km/s</span>
+            </div>
+          </div>
+          <div class="telemetry-hud-status" id="valLiveStatusDesc">
+            Telemetry Stream: Real-time Keplerian ephemeris calculation
+          </div>
+        </div>
+
         <div class="manifest-extra-details">
           <div><span id="lblGravity">Surface Gravity:</span> <span class="extra-span" id="manifestGravity">9.8 m/s² (1.00 g)</span></div>
           <div><span id="lblDayLen">Day Length:</span> <span class="extra-span" id="manifestDay">23h 56m (Tilt: 23.4°)</span></div>
@@ -994,6 +1095,19 @@
             <button class="sim-btn" data-speed="3">3x</button>
             <button class="sim-btn" data-speed="8">8x</button>
           </div>
+
+          <!-- Ephemeris Timeline & Epoch Scrubber -->
+          <div class="epoch-control-group">
+            <span class="epoch-lbl" id="lblEpoch">EPOCH:</span>
+            <input type="range" id="epochSlider" min="1970" max="2050" step="0.1" value="2026.7" class="epoch-slider" title="Scrub through historical & future orbital epochs">
+            <span id="epochDisplay" class="epoch-val">2026.7</span>
+            <button class="epoch-btn active" data-year="2026.7" id="btnEpochNow">Today</button>
+            <button class="epoch-btn" data-year="1977.7" id="btnEpochVoyager">1977</button>
+            <button class="epoch-btn" data-year="2021.9" id="btnEpochJwst">2021</button>
+            <button class="epoch-btn" data-year="2035.5" id="btnEpochMars">2035</button>
+          </div>
+
+          <button class="sim-btn active" id="btnToggleProbes" style="border-color: rgba(251, 191, 36, 0.4); color: #fbbf24;" title="Toggle NASA Mission Probes & Flight Paths">🛰️ NASA Probes: ON</button>
 
           <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #a7f3d0; background: rgba(6, 78, 59, 0.4); padding: 0.4rem 0.9rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.3);">
             <span id="lblHzLegend">🟢 Emerald Ring = Habitable Zone | Click Moons for Lunar Telemetry</span>
@@ -1480,7 +1594,15 @@
         lbl_wavelength: "Wavelength / Spectral Band",
         lbl_distance: "Distance from Earth",
         lbl_coords: "Celestial Coordinates",
-        lbl_release: "Release / Mission"
+        lbl_release: "Release / Mission",
+        lbl_telemetry_title: "NASA DEEP SPACE TELEMETRY",
+        lbl_live_radio_delay: "Radio Delay (Light-Time)",
+        lbl_live_range_earth: "Range to Earth",
+        lbl_live_orbital_speed: "Orbital Speed",
+        lbl_live_escape_speed: "Escape Velocity",
+        lbl_epoch: "EPOCH:",
+        lbl_toggle_probes_on: "🛰️ NASA Probes: ON",
+        lbl_toggle_probes_off: "🛰️ NASA Probes: OFF"
       },
       bn: {
         brand: "আকাশগঙ্গা ছায়াপথ",
@@ -1551,7 +1673,15 @@
         lbl_wavelength: "তরঙ্গদৈর্ঘ্য / স্পেকট্রাম",
         lbl_distance: "পৃথিবী হতে দূরত্ব",
         lbl_coords: "মহাজাগতিক স্থানাঙ্ক",
-        lbl_release: "মিশন / প্রকাশের তারিখ"
+        lbl_release: "মিশন / প্রকাশের তারিখ",
+        lbl_telemetry_title: "নাসা ডিপ স্পেস টেলিমেট্রি",
+        lbl_live_radio_delay: "রেডিও সংকেত বিলম্ব (আলোর গতি)",
+        lbl_live_range_earth: "পৃথিবী হতে দূরত্ব",
+        lbl_live_orbital_speed: "কক্ষপথ বেগ",
+        lbl_live_escape_speed: "মুক্তিবেগ (Escape Speed)",
+        lbl_epoch: "সময়রেখা:",
+        lbl_toggle_probes_on: "🛰️ মহাকাশযান: চালু",
+        lbl_toggle_probes_off: "🛰️ মহাকাশযান: বন্ধ"
       }
     };
 
@@ -1979,6 +2109,23 @@
       document.getElementById('lblAtmo').textContent = dict.lbl_atmo;
       document.getElementById('lblMissions').textContent = dict.lbl_missions;
 
+      const telemTitle = document.getElementById('lblTelemetryHudTitle');
+      if (telemTitle) telemTitle.textContent = dict.lbl_telemetry_title;
+      const telemDelay = document.getElementById('lblLiveLightDelay');
+      if (telemDelay) telemDelay.textContent = dict.lbl_live_radio_delay;
+      const telemDist = document.getElementById('lblLiveDistEarth');
+      if (telemDist) telemDist.textContent = dict.lbl_live_range_earth;
+      const telemSpeed = document.getElementById('lblLiveOrbitalSpeed');
+      if (telemSpeed) telemSpeed.textContent = dict.lbl_live_orbital_speed;
+      const telemEsc = document.getElementById('lblLiveEscapeSpeed');
+      if (telemEsc) telemEsc.textContent = dict.lbl_live_escape_speed;
+      const epochLbl = document.getElementById('lblEpoch');
+      if (epochLbl) epochLbl.textContent = dict.lbl_epoch;
+      const probeBtn = document.getElementById('btnToggleProbes');
+      if (probeBtn) {
+        probeBtn.textContent = probeBtn.classList.contains('active') ? dict.lbl_toggle_probes_on : dict.lbl_toggle_probes_off;
+      }
+
       if (window.updateActiveManifest) window.updateActiveManifest();
       if (window.updateNasaGalleryLang) window.updateNasaGalleryLang();
       if (window.updateBlackHoleSimLang) window.updateBlackHoleSimLang();
@@ -2039,6 +2186,75 @@
         });
       }
       resetAngles(activeSystem);
+
+      let showProbes = true;
+      let projectedProbes = [];
+      let activeProbe = null;
+      let currentEpochYear = 2026.7;
+      let isDraggingEpoch = false;
+
+      const orbitalPeriodsYears = {
+        "Mercury": 0.2408, "Venus": 0.6152, "Earth": 1.0000, "Mars": 1.8808,
+        "Jupiter": 11.862, "Saturn": 29.457, "Uranus": 84.011, "Neptune": 164.79, "Pluto": 247.94
+      };
+      const baseEpochOffsets = {
+        "Mercury": 1.2, "Venus": 2.8, "Earth": 0.0, "Mars": 4.1,
+        "Jupiter": 0.9, "Saturn": 1.5, "Uranus": 3.4, "Neptune": 5.1, "Pluto": 2.2
+      };
+
+      const NASA_SPACECRAFT = [
+        {
+          id: "voyager1",
+          name_en: "Voyager 1",
+          name_bn: "ভয়েজার ১ (Voyager 1)",
+          type_en: "Interstellar Spacecraft",
+          type_bn: "আন্তঃনাক্ষত্রিক মহাকাশযান",
+          launchDate_en: "Sep 5, 1977",
+          launchDate_bn: "৫ সেপ্টেম্বর, ১৯৭৭",
+          status_en: "Active • In Interstellar Space past Heliopause",
+          status_bn: "সক্রিয় • হেলিওপজের বাইরে আন্তঃনাক্ষত্রিক মহাশূন্যে",
+          color: "#fbbf24",
+          speedKmS: 16.9,
+          distAU: 163.4,
+          icon: "🛰️",
+          desc_en: "The farthest human-made object from Earth. Launched in 1977, currently measuring cosmic rays and magnetic fields in interstellar space beyond the solar bubble.",
+          desc_bn: "পৃথিবী থেকে দূরতম মানবসৃষ্ট বস্তু। ১৯৭৭ সালে উৎক্ষেপিত এই যানটি সৌরজগতের সীমানা পার হয়ে আন্তঃনাক্ষত্রিক মাধ্যমে মহাজাগতিক রশ্মি পরিমাপ করছে।"
+        },
+        {
+          id: "jwst",
+          name_en: "JWST (James Webb)",
+          name_bn: "জেমস ওয়েব টেলিস্কোপ",
+          type_en: "Infrared Deep Space Observatory",
+          type_bn: "অবলোহিত মহাশূন্য মানমন্দির",
+          launchDate_en: "Dec 25, 2021",
+          launchDate_bn: "২৫ ডিসেম্বর, ২০২১",
+          status_en: "Active • Orbiting Sun-Earth L2 Lagrange Point",
+          status_bn: "সক্রিয় • সূর্য-পৃথিবী L2 ল্যাগ্রাঞ্জ পয়েন্টে হ্যালো কক্ষপথ",
+          color: "#38bdf8",
+          speedKmS: 30.2,
+          distAU: 1.01,
+          icon: "🔭",
+          desc_en: "NASA/ESA/CSA flagship space telescope orbiting the Sun-Earth L2 point (1.5M km from Earth), capturing the earliest galaxies and exoplanet atmospheres.",
+          desc_bn: "নাসা ও ইএসএ-এর সর্বাধুনিক মহাশূন্য টেলিস্কোপ যা পৃথিবী হতে ১৫ লাখ কিলোমিটার দূরে সূর্য-পৃথিবী L2 বিন্দুকে প্রদক্ষিণ করে মহাবিশ্বের আদিমতম গ্যালাক্সি পর্যবেক্ষণ করছে।"
+        },
+        {
+          id: "parker",
+          name_en: "Parker Solar Probe",
+          name_bn: "পার্কার সোলার প্রোব",
+          type_en: "Solar Corona Explorer",
+          type_bn: "সৌর করোনা অনুসন্ধানকারী যান",
+          launchDate_en: "Aug 12, 2018",
+          launchDate_bn: "১২ আগস্ট, ২০১৮",
+          status_en: "Active • Touching Solar Corona at 692,000 km/h",
+          status_bn: "সক্রিয় • প্রতি ঘণ্টায় ৬,৯২,০০০ কিমি গতিতে সূর্য করোনা স্পর্শ করছে",
+          color: "#f43f5e",
+          speedKmS: 192.0,
+          distAU: 0.046,
+          icon: "☀️",
+          desc_en: "The fastest spacecraft in history. Dives directly through the Sun's outer corona to unravel solar wind acceleration and coronal heating physics.",
+          desc_bn: "ইতিহাসের দ্রুততম মহাকাশযান। সূর্যের বহিরাংশ করোনায় সরাসরি প্রবেশ করে সৌর ঝড় ও সৌর বায়ুর রহস্য ভেদ করছে।"
+        }
+      ];
 
       let isDragging = false;
       let lastMouseX = 0, lastMouseY = 0;
@@ -2139,13 +2355,24 @@
             }
           }
         }
-        // Tier 2: Click Planet in System View to select
+        // Tier 2: Click Planet or Spacecraft Probe in System View to select
         if (currentTier === "system" && tierProgress > 0.75 && tierProgress < 1.25) {
+          if (showProbes && activeSystem.id === 'sol') {
+            for (let pr = 0; pr < projectedProbes.length; pr++) {
+              const pobj = projectedProbes[pr];
+              if (Math.hypot(e.clientX - pobj.x, e.clientY - pobj.y) < 18) {
+                inspectProbe(pobj.probe);
+                document.querySelectorAll('.planet-btn-item').forEach(el => el.classList.remove('active'));
+                return;
+              }
+            }
+          }
           for (let p = 0; p < projectedPlanets.length; p++) {
             const pp = projectedPlanets[p];
             if (Math.hypot(e.clientX - pp.x, e.clientY - pp.y) < Math.max(16, pp.planet.r + 10)) {
               activePlanet = pp.planet;
               activeMoon = null;
+              activeProbe = null;
               updateActiveManifest();
               document.querySelectorAll('.planet-btn-item').forEach(el => {
                 const name = el.querySelector('.p-name').textContent;
@@ -2249,6 +2476,7 @@
 
       function inspectMoon(moon) {
         activeMoon = moon;
+        activeProbe = null;
         document.getElementById('manifestPlanetName').textContent = currentLang === 'en' ? moon.name_en : moon.name_bn;
         const tag = document.getElementById('manifestHabitableTag');
         tag.className = 'manifest-type-pill';
@@ -2264,6 +2492,136 @@
         document.getElementById('manifestMoons').textContent = "N/A (Orbiting planet)";
         document.getElementById('manifestAtmo').textContent = "Trace surface-bound exosphere";
         document.getElementById('manifestMissions').textContent = currentLang === 'en' ? (moon.feature_en || "Surveyed by orbiters") : (moon.feature_bn || "অরবিটার দ্বারা পর্যবেক্ষিত");
+        updateLiveTelemetryHUD();
+      }
+
+      function inspectProbe(probe) {
+        activeProbe = probe;
+        activePlanet = null;
+        activeMoon = null;
+
+        document.getElementById('manifestPlanetName').textContent = currentLang === 'en' ? probe.name_en : probe.name_bn;
+        const tag = document.getElementById('manifestHabitableTag');
+        tag.className = 'manifest-type-pill';
+        tag.style.background = 'rgba(251, 191, 36, 0.2)';
+        tag.style.color = '#fbbf24';
+        tag.style.borderColor = '#fbbf24';
+        tag.textContent = currentLang === 'en' ? probe.type_en : probe.type_bn;
+
+        document.getElementById('manifestDesc').textContent = currentLang === 'en' ? probe.desc_en : probe.desc_bn;
+        document.getElementById('manifestDist').textContent = `${probe.distAU} AU`;
+        document.getElementById('manifestPeriod').textContent = currentLang === 'en' ? `Launched: ${probe.launchDate_en}` : `উৎক্ষেপণ: ${probe.launchDate_bn}`;
+        document.getElementById('manifestRadius').textContent = currentLang === 'en' ? "Probe Array (3-12m)" : "রোবোটিক প্রোব (৩-১২মি)";
+        document.getElementById('manifestTemp').textContent = probe.id === 'parker' ? "1,370°C (Heat Shield)" : "-230°C (Deep Space)";
+        document.getElementById('manifestGravity').textContent = "Microgravity (0.00 g)";
+        document.getElementById('manifestDay').textContent = currentLang === 'en' ? `Speed: ${probe.speedKmS} km/s` : `গতিবেগ: ${probe.speedKmS} কিমি/সে`;
+        document.getElementById('manifestMoons').textContent = "N/A (Spacecraft)";
+        document.getElementById('manifestAtmo').textContent = "Vacuum of Space (মহাশূন্যের শূন্যতা)";
+        document.getElementById('manifestMissions').textContent = currentLang === 'en' ? probe.status_en : probe.status_bn;
+
+        updateLiveTelemetryHUD();
+      }
+
+      function updateLiveTelemetryHUD() {
+        const delayEl = document.getElementById('valLiveLightDelay');
+        const distEl = document.getElementById('valLiveDistEarth');
+        const speedEl = document.getElementById('valLiveOrbitalSpeed');
+        const escEl = document.getElementById('valLiveEscapeSpeed');
+        const statusEl = document.getElementById('valLiveStatusDesc');
+
+        if (!delayEl || !distEl || !speedEl || !escEl) return;
+
+        const escapeSpeeds = {
+          "Mercury": 4.25, "Venus": 10.36, "Earth": 11.19, "Mars": 5.03,
+          "Jupiter": 59.54, "Saturn": 35.49, "Uranus": 21.29, "Neptune": 23.56, "Pluto": 1.21
+        };
+
+        if (activeProbe) {
+          const pr = activeProbe;
+          const distAU = pr.distAU;
+          const distKm = distAU * 149597870.7;
+          const lightSec = distKm / 299792.458;
+
+          let delayStr = "";
+          if (lightSec < 60) delayStr = `${lightSec.toFixed(1)}s`;
+          else if (lightSec < 3600) delayStr = `${Math.floor(lightSec/60)}m ${Math.floor(lightSec%60)}s`;
+          else {
+            const h = Math.floor(lightSec/3600);
+            const m = Math.floor((lightSec%3600)/60);
+            delayStr = `${h}h ${m}m ${Math.floor(lightSec%60)}s`;
+          }
+
+          delayEl.textContent = delayStr;
+          distEl.textContent = `${distAU.toFixed(2)} AU (${(distKm / 1e6).toFixed(1)}M km)`;
+          speedEl.textContent = `${pr.speedKmS} km/s (${Math.round(pr.speedKmS * 3600).toLocaleString()} km/h)`;
+          escEl.textContent = pr.id === 'voyager1' ? (currentLang === 'en' ? "Escaped Sol" : "সৌরজগৎ মুক্ত") : "Orbital Vector";
+          statusEl.textContent = currentLang === 'en' 
+            ? `NASA Deep Space Network active • Carrier freq: 8.4 GHz (X-Band)`
+            : `নাসা ডিপ স্পেস নেটওয়ার্ক সংযোগ সক্রিয় • ক্যারিয়ার কম্পাঙ্ক: ৮.৪ গিগাহার্টজ`;
+          return;
+        }
+
+        if (activeMoon) {
+          const m = activeMoon;
+          delayEl.textContent = m.name_en.includes("Moon") ? "1.28s (Direct)" : "38m 45s (Relayed)";
+          distEl.textContent = m.distKm;
+          speedEl.textContent = "1.02 km/s (Orbital)";
+          escEl.textContent = "2.38 km/s";
+          statusEl.textContent = currentLang === 'en'
+            ? `Lunar ephemeris locked • Gravitational tie to host body`
+            : `উপগ্রহ কক্ষপথ টেলিমেট্রি • মূল গ্রহের মহাকর্ষে আবদ্ধ`;
+          return;
+        }
+
+        const p = activePlanet;
+        if (!p) return;
+
+        const earthAngle = planetAngles["Earth"] || 0;
+        const pAngle = planetAngles[p.name_en] || 0;
+        const earthDistAU = 1.0;
+        const pDistAU = p.distAU;
+
+        let distAU = 0;
+        if (p.isEarth) {
+          distAU = 0;
+        } else {
+          distAU = Math.sqrt(
+            earthDistAU * earthDistAU + 
+            pDistAU * pDistAU - 
+            2 * earthDistAU * pDistAU * Math.cos(pAngle - earthAngle)
+          );
+        }
+
+        const distKm = distAU * 149597870.7;
+        const lightSec = distKm / 299792.458;
+
+        let delayStr = "";
+        if (p.isEarth) {
+          delayStr = currentLang === 'en' ? "< 0.001s (Direct)" : "< ০.০০১ সে (সরাসরি)";
+        } else if (lightSec < 60) {
+          delayStr = `${lightSec.toFixed(1)}s`;
+        } else if (lightSec < 3600) {
+          delayStr = `${Math.floor(lightSec/60)}m ${Math.floor(lightSec%60)}s`;
+        } else {
+          const h = Math.floor(lightSec/3600);
+          const m = Math.floor((lightSec%3600)/60);
+          delayStr = `${h}h ${m}m`;
+        }
+
+        delayEl.textContent = delayStr;
+        distEl.textContent = p.isEarth 
+          ? "0.00 AU (Surface / LEO)" 
+          : `${distAU.toFixed(2)} AU (${(distKm / 1e6).toFixed(1)}M km)`;
+
+        const orbSpeed = (29.78 / Math.sqrt(p.distAU)).toFixed(2);
+        speedEl.textContent = `${orbSpeed} km/s (${Math.round(orbSpeed * 3600).toLocaleString()} km/h)`;
+
+        const escVal = escapeSpeeds[p.name_en] || (p.distAU * 5.2).toFixed(1);
+        escEl.textContent = `${escVal} km/s`;
+
+        statusEl.textContent = currentLang === 'en'
+          ? `JPL Horizons Ephemeris • Sub-arcsecond coordinate tracking`
+          : `জেপিএল হরাইজনস কক্ষপথ ডাটাবেজ • রিয়েল-টাইম দূরবর্তী অবস্থান হিসাব`;
       }
 
       // Breadcrumb clicks
@@ -2281,6 +2639,10 @@
 
       // Update Active Manifest
       window.updateActiveManifest = function() {
+        if (activeProbe) {
+          inspectProbe(activeProbe);
+          return;
+        }
         if (activeMoon) {
           inspectMoon(activeMoon);
           return;
@@ -2316,6 +2678,7 @@
         document.getElementById('manifestMoons').textContent = currentLang === 'en' ? p.moons_en : p.moons_bn;
         document.getElementById('manifestAtmo').textContent = currentLang === 'en' ? p.atmo_en : p.atmo_bn;
         document.getElementById('manifestMissions').textContent = currentLang === 'en' ? p.missions_en : p.missions_bn;
+        updateLiveTelemetryHUD();
         updateBreadcrumbs();
       };
 
@@ -2369,13 +2732,51 @@
       });
 
       // Sim Speed
-      document.querySelectorAll('.sim-btn').forEach(btn => {
+      document.querySelectorAll('.sim-btn[data-speed]').forEach(btn => {
         btn.addEventListener('click', () => {
-          document.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.sim-btn[data-speed]').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           const spd = parseFloat(btn.getAttribute('data-speed'));
           if (spd === 0) simPaused = true;
           else { simPaused = false; simSpeedMultiplier = spd; }
+        });
+      });
+
+      // NASA Probes Toggle Button
+      const probeToggleBtn = document.getElementById('btnToggleProbes');
+      if (probeToggleBtn) {
+        probeToggleBtn.addEventListener('click', () => {
+          showProbes = !showProbes;
+          probeToggleBtn.classList.toggle('active', showProbes);
+          const dict = I18N[currentLang];
+          probeToggleBtn.textContent = showProbes ? dict.lbl_toggle_probes_on : dict.lbl_toggle_probes_off;
+        });
+      }
+
+      // Epoch Timeline Slider & Quick Presets
+      const epochSlider = document.getElementById('epochSlider');
+      const epochDisplay = document.getElementById('epochDisplay');
+
+      if (epochSlider) {
+        epochSlider.addEventListener('mousedown', () => { isDraggingEpoch = true; });
+        window.addEventListener('mouseup', () => { isDraggingEpoch = false; });
+        epochSlider.addEventListener('input', (e) => {
+          currentEpochYear = parseFloat(e.target.value);
+          if (epochDisplay) epochDisplay.textContent = currentEpochYear.toFixed(1);
+          document.querySelectorAll('.epoch-btn').forEach(b => b.classList.remove('active'));
+          updateLiveTelemetryHUD();
+        });
+      }
+
+      document.querySelectorAll('.epoch-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.epoch-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const yr = parseFloat(btn.getAttribute('data-year'));
+          currentEpochYear = yr;
+          if (epochSlider) epochSlider.value = yr.toFixed(1);
+          if (epochDisplay) epochDisplay.textContent = yr.toFixed(1);
+          updateLiveTelemetryHUD();
         });
       });
 
@@ -2568,6 +2969,16 @@
             ctx.restore();
           }
 
+          // Advance epoch in real-time if simulation is playing
+          if (!simPaused && sys.id === 'sol') {
+            currentEpochYear += (dt * 0.04 * simSpeedMultiplier);
+            if (currentEpochYear > 2050) currentEpochYear = 1970;
+            const sl = document.getElementById('epochSlider');
+            const ed = document.getElementById('epochDisplay');
+            if (sl && !isDraggingEpoch) sl.value = currentEpochYear.toFixed(1);
+            if (ed) ed.textContent = currentEpochYear.toFixed(1);
+          }
+
           // Orbit paths & Planets
           projectedPlanets = [];
           sys.planets.forEach(planet => {
@@ -2581,12 +2992,20 @@
             ctx.stroke();
             ctx.restore();
 
-            if (!simPaused) {
-              const speed = (1.8 / Math.sqrt(planet.distAU + 0.1)) * 0.008 * simSpeedMultiplier;
-              planetAngles[planet.name_en] = (planetAngles[planet.name_en] || 0) + speed;
+            let currentAngle = 0;
+            if (sys.id === 'sol' && orbitalPeriodsYears[planet.name_en]) {
+              const pYears = orbitalPeriodsYears[planet.name_en];
+              const baseOffset = baseEpochOffsets[planet.name_en] || 0;
+              currentAngle = baseOffset + ((currentEpochYear - 2000.0) / pYears) * (Math.PI * 2);
+              planetAngles[planet.name_en] = currentAngle;
+            } else {
+              if (!simPaused) {
+                const speed = (1.8 / Math.sqrt(planet.distAU + 0.1)) * 0.008 * simSpeedMultiplier;
+                planetAngles[planet.name_en] = (planetAngles[planet.name_en] || 0) + speed;
+              }
+              currentAngle = planetAngles[planet.name_en] || 0;
             }
 
-            const currentAngle = planetAngles[planet.name_en];
             const px = starCenterX + Math.cos(currentAngle) * orbitR;
             const py = starCenterY + Math.sin(currentAngle) * orbitR * cosTilt;
 
@@ -2623,6 +3042,147 @@
             ctx.fillText(currentLang === 'en' ? planet.name_en : planet.name_bn, px + planet.r + 6, py + 3);
             ctx.restore();
           });
+
+          // ==========================================
+          // NASA Spacecraft Probes & Mission Trajectories (Sol System)
+          // ==========================================
+          projectedProbes = [];
+          if (showProbes && sys.id === 'sol') {
+            ctx.save();
+
+            // 1. VOYAGER 1: Interstellar Escape Trajectory
+            ctx.beginPath();
+            ctx.setLineDash([4, 6]);
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+            ctx.lineWidth = 1.5;
+
+            const voySteps = 36;
+            for (let s = 0; s <= voySteps; s++) {
+              const frac = s / voySteps;
+              const rAU = 1.0 + Math.pow(frac, 1.75) * 162.4;
+              const visR = (Math.log(rAU + 1) * 3.2 + 0.8) * orbitScaleFactor;
+              const th = 0.25 + frac * 2.2;
+              const vx = starCenterX + Math.cos(th) * visR;
+              const vy = starCenterY + Math.sin(th) * visR * cosTilt;
+              if (s === 0) ctx.moveTo(vx, vy);
+              else ctx.lineTo(vx, vy);
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Voyager 1 Beacon
+            const voyR = (Math.log(163.4 + 1) * 3.2 + 0.8) * orbitScaleFactor;
+            const voyTh = 2.45;
+            const voyX = starCenterX + Math.cos(voyTh) * voyR;
+            const voyY = starCenterY + Math.sin(voyTh) * voyR * cosTilt;
+            projectedProbes.push({ x: voyX, y: voyY, probe: NASA_SPACECRAFT[0] });
+
+            const isVoyHover = Math.hypot(mouseX - voyX, mouseY - voyY) < 18;
+            const isVoyActive = activeProbe && activeProbe.id === "voyager1";
+
+            ctx.beginPath();
+            ctx.arc(voyX, voyY, isVoyHover || isVoyActive ? 8 : 5, 0, Math.PI * 2);
+            ctx.fillStyle = isVoyHover || isVoyActive ? '#fbbf24' : 'rgba(251, 191, 36, 0.85)';
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            const voyPulse = (Math.sin(now * 0.005) + 1) * 4;
+            ctx.beginPath();
+            ctx.arc(voyX, voyY, 7 + voyPulse, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.35)';
+            ctx.stroke();
+
+            ctx.font = 'bold 9px "JetBrains Mono", sans-serif';
+            ctx.fillStyle = '#fbbf24';
+            ctx.fillText('🛰️ Voyager 1 (163.4 AU)', voyX + 12, voyY + 3);
+
+            // 2. JWST: Sun-Earth L2 Halo Orbit
+            const earthAngle = planetAngles["Earth"] || 0;
+            const l2OrbitR = (Math.log(1.0 + 1) * 3.2 + 0.8) * orbitScaleFactor + 22 * camera.zoom;
+            const l2CenterX = starCenterX + Math.cos(earthAngle) * l2OrbitR;
+            const l2CenterY = starCenterY + Math.sin(earthAngle) * l2OrbitR * cosTilt;
+
+            const jwstHaloAngle = now * 0.0025;
+            const haloR = 10 * camera.zoom;
+            const jwstX = l2CenterX + Math.cos(jwstHaloAngle) * haloR;
+            const jwstY = l2CenterY + Math.sin(jwstHaloAngle) * haloR * cosTilt;
+
+            ctx.beginPath();
+            ctx.ellipse(l2CenterX, l2CenterY, haloR, haloR * cosTilt, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+            ctx.setLineDash([2, 4]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            projectedProbes.push({ x: jwstX, y: jwstY, probe: NASA_SPACECRAFT[1] });
+
+            const isJwstHover = Math.hypot(mouseX - jwstX, mouseY - jwstY) < 14;
+            const isJwstActive = activeProbe && activeProbe.id === "jwst";
+
+            ctx.beginPath();
+            ctx.arc(jwstX, jwstY, isJwstHover || isJwstActive ? 6 : 4, 0, Math.PI * 2);
+            ctx.fillStyle = isJwstHover || isJwstActive ? '#38bdf8' : '#0284c7';
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.font = '8px "JetBrains Mono", sans-serif';
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillText('🔭 JWST (L2)', jwstX + 8, jwstY - 4);
+
+            // 3. PARKER SOLAR PROBE: Coronal Perihelion Dive Ellipse
+            const pPeri = 0.046, pAph = 0.72;
+            const pA = (pPeri + pAph) / 2;
+            const pE = (pAph - pPeri) / (pAph + pPeri);
+
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(244, 63, 94, 0.45)';
+            ctx.setLineDash([3, 4]);
+            const pSteps = 36;
+            for (let pi = 0; pi <= pSteps; pi++) {
+              const nu = (pi / pSteps) * Math.PI * 2;
+              const r = (pA * (1 - pE * pE)) / (1 + pE * Math.cos(nu));
+              const visR = (Math.log(r + 1) * 3.2 + 0.8) * orbitScaleFactor;
+              const pTh = nu + 1.25;
+              const px = starCenterX + Math.cos(pTh) * visR;
+              const py = starCenterY + Math.sin(pTh) * visR * cosTilt;
+              if (pi === 0) ctx.moveTo(px, py);
+              else ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            const pNu = (now * 0.0016) % (Math.PI * 2);
+            const curR = (pA * (1 - pE * pE)) / (1 + pE * Math.cos(pNu));
+            const curVisR = (Math.log(curR + 1) * 3.2 + 0.8) * orbitScaleFactor;
+            const curTh = pNu + 1.25;
+            const parkerX = starCenterX + Math.cos(curTh) * curVisR;
+            const parkerY = starCenterY + Math.sin(curTh) * curVisR * cosTilt;
+
+            projectedProbes.push({ x: parkerX, y: parkerY, probe: NASA_SPACECRAFT[2] });
+
+            const isParkerHover = Math.hypot(mouseX - parkerX, mouseY - parkerY) < 14;
+            const isParkerActive = activeProbe && activeProbe.id === "parker";
+
+            ctx.beginPath();
+            ctx.arc(parkerX, parkerY, isParkerHover || isParkerActive ? 6 : 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#f43f5e';
+            ctx.fill();
+            ctx.strokeStyle = '#fde047';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.font = '8px "JetBrains Mono", sans-serif';
+            ctx.fillStyle = '#f43f5e';
+            ctx.fillText('☀️ Parker Probe', parkerX + 8, parkerY + 4);
+
+            ctx.restore();
+          }
+
+          updateLiveTelemetryHUD();
 
           // Central Star
           ctx.save();
@@ -3818,6 +4378,9 @@
         btnDoppler.addEventListener('click', () => {
           useDoppler = !useDoppler;
           btnDoppler.classList.toggle('active', useDoppler);
+          if (typeof updateDiskTextures === 'function') {
+            updateDiskTextures();
+          }
         });
       }
       if (btnGrid) {
@@ -4040,8 +4603,8 @@
       photonRing.rotation.x = Math.PI / 2;
       scene.add(photonRing);
 
-      // 5. Procedural High-Res Accretion Disk Texture
-      function createDiskTexture() {
+      // 5. Procedural High-Res Accretion Disk Texture with Doppler Beaming
+      function createDiskTexture(dopplerEnabled = true) {
         const texCanvas = document.createElement('canvas');
         texCanvas.width = 1024;
         texCanvas.height = 1024;
@@ -4059,11 +4622,28 @@
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, 1024, 1024);
 
+        if (dopplerEnabled) {
+          // Relativistic Doppler Beaming: Left hemisphere approaching, right receding
+          const dopplerGrad = ctx.createLinearGradient(0, cy, 1024, cy);
+          dopplerGrad.addColorStop(0.0, 'rgba(224, 242, 254, 0.75)'); // Intense blue-white
+          dopplerGrad.addColorStop(0.35, 'rgba(254, 240, 138, 0.45)'); // Golden yellow
+          dopplerGrad.addColorStop(0.65, 'rgba(185, 28, 28, 0.25)');   // Redshift dimmer
+          dopplerGrad.addColorStop(1.0, 'rgba(40, 10, 10, 0.55)');     // Dim red
+          ctx.globalCompositeOperation = 'color-dodge';
+          ctx.fillStyle = dopplerGrad;
+          ctx.fillRect(0, 0, 1024, 1024);
+          ctx.globalCompositeOperation = 'source-over';
+        }
+
         for (let a = 0; a < 360; a += 3) {
           const rad = (a * Math.PI) / 180;
           const rMid = 220 + Math.random() * 220;
-          const alpha = 0.04 + Math.random() * 0.08;
-          ctx.strokeStyle = "rgba(255, 235, 180, " + alpha + ")";
+          let alpha = 0.04 + Math.random() * 0.08;
+          if (dopplerEnabled) {
+            const beaming = 1.0 + Math.cos(rad) * 0.65;
+            alpha *= Math.max(0.25, beaming);
+          }
+          ctx.strokeStyle = "rgba(255, 235, 180, " + Math.min(1.0, alpha) + ")";
           ctx.lineWidth = 2 + Math.random() * 3;
           ctx.beginPath();
           ctx.arc(cx, cy, rMid, rad, rad + 0.3 + Math.random() * 0.4);
@@ -4072,7 +4652,7 @@
         return new THREE.CanvasTexture(texCanvas);
       }
 
-      const diskTexture = createDiskTexture();
+      let diskTexture = createDiskTexture(useDoppler);
       const diskGeo = new THREE.RingGeometry(2.8, 10.0, 96);
       const diskMat = new THREE.MeshBasicMaterial({
         map: diskTexture,
@@ -4100,6 +4680,14 @@
         depthWrite: false
       });
 
+      function updateDiskTextures() {
+        diskTexture = createDiskTexture(useDoppler);
+        diskMat.map = diskTexture;
+        diskMat.needsUpdate = true;
+        archMat.map = diskTexture;
+        archMat.needsUpdate = true;
+      }
+
       const archUpper = new THREE.Mesh(archUpperGeo, archMat);
       const archLower = new THREE.Mesh(archLowerGeo, archMat);
       archUpper.position.z = -0.2;
@@ -4109,6 +4697,19 @@
       lensingGroup.add(archUpper);
       lensingGroup.add(archLower);
       scene.add(lensingGroup);
+
+      // Outer Relativistic Corona Aura (Cinematic HDR Bloom)
+      const coronaAuraGeo = new THREE.RingGeometry(2.0, 9.5, 64);
+      const coronaAuraMat = new THREE.MeshBasicMaterial({
+        color: 0xffa200,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.18,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      const coronaAura = new THREE.Mesh(coronaAuraGeo, coronaAuraMat);
+      scene.add(coronaAura);
 
       scene.add(diskGroup);
 
@@ -4259,6 +4860,10 @@
         lensingGroup.rotation.y = camAzimuth;
         haloMesh.rotation.y = camAzimuth;
         haloMesh.rotation.x = Math.atan2(camera.position.y, Math.hypot(camera.position.x, camera.position.z));
+        if (typeof coronaAura !== 'undefined') {
+          coronaAura.rotation.y = camAzimuth;
+          coronaAura.rotation.x = haloMesh.rotation.x;
+        }
 
         // Spacetime Grid Visibility
         gridGroup.visible = showGrid;

@@ -29,12 +29,23 @@
   1. **Tier 1 (Galaxy Level)**: Macro-view of the Milky Way spiral arms, stellar clusters, and galactic core.
   2. **Tier 2 (Solar System Level)**: Heliocentric orbital simulation of planets with real-time orbital controls.
   3. **Tier 3 (Planetary & Lunar Level)**: High-resolution close-up exploration of planets, rings, and major moons.
-- **Sagittarius A\* Black Hole Simulator**:
-  - Photorealistic accretion disk visualization.
-  - Relativistic beaming and gravitational lensing effects.
-  - Interactive parameters (mass, spin, event horizon radius).
+- **📡 NASA Deep Space Telemetry HUD**:
+  - Live calculations of radio signal latency / light-travel time delay from Earth ($t = d/c$).
+  - Real-time Euclidean orbital distances in Astronomical Units (AU) and millions of kilometers.
+  - Keplerian instantaneous orbital velocities ($v = \sqrt{GM_\odot/r}$) and planetary escape speeds ($v_{\text{esc}}$).
+- **🛰️ NASA Spacecraft Mission Trajectories**:
+  - **Voyager 1**: Hyperbolic interstellar departure vector out to 163.4+ AU.
+  - **James Webb Space Telescope (JWST)**: Halo orbit around the Sun-Earth $L_2$ Lagrange point (1.5M km from Earth).
+  - **Parker Solar Probe**: Coronal perihelion dive ellipse swinging close to the solar surface at 692,000 km/h.
+- **⏳ Ephemeris Timeline & Epoch Scrubber**:
+  - Scrub from 1970 to 2050 to simulate planetary alignments, conjunctions, and historical mission launch windows (e.g. 1977 Voyager Grand Tour, 2021 JWST, 2035 Mars Opposition).
+- **Sagittarius A\* Black Hole Simulator (Three.js WebGL)**:
+  - Relativistic Doppler beaming asymmetry (approaching matter blueshifted/boosted, receding dimmed/redshifted).
+  - Relativistic gravitational lensing arches (Interstellar Kip Thorne effect).
+  - Gravitational time dilation probe measuring Schwarzschild curvature: $\Delta t_\infty / \Delta \tau = 1 / \sqrt{1 - r_s/r}$.
+  - Blandford-Znajek relativistic polar plasma jets and spacetime curvature grid.
 - **🌐 Bilingual Localization**:
-  - Instant toggle between **English** and **Bengali (বাংলা)** with specialized astronomical terminology in both languages.
+  - Full support for **English** and **Bengali (বাংলা)** across all celestial bodies, telemetry cards, and mission parameters.
 - **🎵 Cosmic Ambient Audio**:
   - Procedural Web Audio API sound generator creating an ethereal deep-space ambient soundscape.
 - **📱 Responsive Glassmorphic UI**:
