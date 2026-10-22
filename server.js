@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
+const zlib = require('zlib');
 
 const PORT = process.env.PORT || 3000;
 const ROOT_DIR = __dirname;
@@ -22,6 +22,8 @@ const MIME_TYPES = {
   '.woff2': 'font/woff2',
   '.ttf': 'font/ttf'
 };
+
+const COMPRESSIBLE = new Set(['.html', '.css', '.js', '.json', '.svg']);
 
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
@@ -45,23 +47,43 @@ const server = http.createServer((req, res) => {
 
     const ext = path.extname(safePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+    const etag = '"' + stats.size + '-' + Math.floor(stats.mtimeMs) + '"';
 
-    res.writeHead(200, {
+    const headers = {
       'Content-Type': contentType,
-      'Content-Length': stats.size,
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'no-cache'
-    });
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      // HTML is always fresh; static assets can be cached and revalidated.
+      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=3600',
+      ETag: etag
+    };
+
+    if (req.headers['if-none-match'] === etag) {
+      res.writeHead(304, headers);
+      res.end();
+      return;
+    }
 
     const stream = fs.createReadStream(safePath);
-    stream.pipe(res);
+    const wantsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
+    if (wantsGzip && COMPRESSIBLE.has(ext)) {
+      headers['Content-Encoding'] = 'gzip';
+      headers.Vary = 'Accept-Encoding';
+      res.writeHead(200, headers);
+      stream.pipe(zlib.createGzip()).pipe(res);
+    } else {
+      headers['Content-Length'] = stats.size;
+      res.writeHead(200, headers);
+      stream.pipe(res);
+    }
   });
 });
 
 server.listen(PORT, () => {
   console.log('====================================================');
-  console.log('🚀 Cosmic Odyssey Astronomy Portal is running live!');
+  console.log('🚀 Cosmic Odyssey v3 — Aurora Observatory is live!');
   console.log('🌐 Local URL: http://localhost:' + PORT);
-  console.log('🌌 3D Black Hole Simulation & Solar Explorer Ready');
+  console.log('🌌 Galaxy → Solar System → Planets · Black Hole Lab · Mission Control Ready');
   console.log('====================================================');
 });

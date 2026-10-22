@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Milky Way Galaxy | আকাশগঙ্গা ছায়াপথ</title>
+  <title>Cosmic Odyssey v3 — The Milky Way Galaxy | আকাশগঙ্গা ছায়াপথ</title>
+  <meta name="theme-color" content="#050813" />
+  <meta property="og:title" content="Cosmic Odyssey — Interactive Milky Way Observatory" />
+  <meta property="og:description" content="3-tier deep zoom Galaxy → Solar System → Planets, Sagittarius A* relativity lab, NASA archive, and new Mission Control tools: live moon phase, planet comparator, gravity simulator and light-travel calculator. EN / বাংলা." />
+  <meta property="og:type" content="website" />
   <meta name="description" content="Interactive 3D Milky Way Galaxy with 3-tier deep zooming: Galaxy -> Solar System -> Planet & Moon Exploration in English and Bengali (বাংলা)." />
   
   <!-- Google Fonts: Inter, Space Grotesk, Outfit, JetBrains Mono, Hind Siliguri -->
@@ -878,6 +882,8 @@
       .footer-content { grid-template-columns: 1fr; }
     }
   </style>
+  <!-- v3 Aurora Observatory design system -->
+  <link rel="stylesheet" href="css/aurora.css" />
 </head>
 <body>
   <div class="cosmic-noise-bg"></div>
@@ -899,11 +905,15 @@
         <li><a href="#solar-system" data-i18n="nav_address">Our Address</a></li>
         <li><a href="#scale" data-i18n="nav_scale">Scale</a></li>
         <li><a href="#timeline" data-i18n="nav_timeline">Evolution</a></li>
+        <li><a href="#mission-control">Mission Control</a></li>
         <li><a href="#quiz" data-i18n="nav_quiz">Quiz</a></li>
       </ul>
     </nav>
 
     <div class="nav-actions">
+      <button class="v3-search-btn" id="v3SearchBtn" title="Search worlds, systems and tools">
+        <span>⌕</span><span>Search</span><kbd>Ctrl K</kbd>
+      </button>
       <!-- NASA Gallery Button -->
       <button class="nasa-nav-btn" id="openNasaModalNavBtn" title="Real NASA Imagery Archive">
         <span>📷</span>
@@ -1479,6 +1489,132 @@
     </div>
   </section>
 
+
+  <!-- Section 5.5: Mission Control (NEW in v3) -->
+  <section class="section-container" id="mission-control">
+    <div class="section-header">
+      <span class="section-tag">New in v3 · Mission Control</span>
+      <h2 class="section-title">Mission Control — Live Cosmic Tools (মিশন কন্ট্রোল)</h2>
+      <p class="section-description">
+        Four working instruments built on real published data: tonight's real Moon phase for your sky,
+        a side-by-side world comparator, a gravity &amp; weight simulator, and a light-travel time
+        calculator — plus favourites that stay saved on your device. Press <strong>Ctrl / Cmd + K</strong>
+        anywhere to search the whole observatory.
+      </p>
+    </div>
+
+    <div class="mc-favs" id="mcFavs" aria-label="Your favourite worlds and destinations"></div>
+
+    <div class="mc-grid">
+      <!-- Tonight's Sky -->
+      <article class="mc-card">
+        <div class="mc-head">
+          <div>
+            <div class="mc-kicker">Live Astronomy · Computed Now</div>
+            <h3 class="mc-title">Tonight's Sky (আজ রাতের আকাশ)</h3>
+            <p class="mc-sub" id="mcSkyDate">—</p>
+          </div>
+        </div>
+        <div class="mc-row" style="margin-bottom:1rem">
+          <label class="mc-mono" for="mcCity">OBSERVING FROM</label>
+          <select class="mc-select" id="mcCity"></select>
+        </div>
+        <div class="mc-sky">
+          <canvas id="mcMoonCanvas" width="236" height="236" aria-label="Tonight's Moon, drawn from its calculated phase"></canvas>
+          <div class="mc-sky-stats">
+            <div class="mc-sky-stat"><div class="l">Moon Phase</div><div class="v" id="mcMoonPhase">—</div></div>
+            <div class="mc-sky-stat"><div class="l">Illumination</div><div class="v" id="mcMoonIllum">—</div></div>
+            <div class="mc-sky-stat"><div class="l">Moon Age</div><div class="v" id="mcMoonAge">—</div></div>
+            <div class="mc-sky-stat"><div class="l">Next Full Moon</div><div class="v" id="mcMoonNext">—</div></div>
+          </div>
+        </div>
+        <div class="mc-out">
+          <div class="mc-mono">MILKY WAY CORE TONIGHT</div>
+          <p style="font-size:.9rem;color:#e2e8f0;margin-top:.35rem;line-height:1.6" id="mcCoreVis">—</p>
+        </div>
+        <p class="mc-note">Moon phase is calculated live from the synodic cycle (29.53 days) anchored to the new moon of 6 Jan 2000 — accurate to a few hours. Core visibility is a seasonal guide for a dark-sky site; city light pollution will hide the faintest glow.</p>
+      </article>
+
+      <!-- Gravity Simulator -->
+      <article class="mc-card">
+        <div class="mc-head">
+          <div>
+            <div class="mc-kicker">Physics Lab · Real Gravity Data</div>
+            <h3 class="mc-title">What Do You Weigh Out There? (মাধ্যাকর্ষণ)</h3>
+            <p class="mc-sub">Pick a world, enter your weight on Earth, and see what the scales — and your legs — would say there.</p>
+          </div>
+          <button class="mc-fav-btn" id="mcFavGravity" data-fav="mars" title="Save this world as a favourite">☆</button>
+        </div>
+        <div class="mc-row">
+          <select class="mc-select" id="mcGravityWorld" style="flex:1"></select>
+          <input class="mc-input" id="mcWeight" type="number" min="0" max="500" step="0.5" value="70" style="width:110px" aria-label="Your weight on Earth in kilograms" />
+          <span class="mc-mono">KG ON EARTH</span>
+        </div>
+        <div class="mc-out" id="mcGravityOut"></div>
+        <p class="mc-note">Weight scales with surface gravity (W = m·g). Jump height assumes the same leg power as a 50&nbsp;cm jump on Earth and ignores air resistance.</p>
+      </article>
+
+      <!-- Planet Comparator -->
+      <article class="mc-card wide">
+        <div class="mc-head">
+          <div>
+            <div class="mc-kicker">World vs World · 14 Real Worlds</div>
+            <h3 class="mc-title">Planet Comparator (গ্রহের তুলনা)</h3>
+            <p class="mc-sub">Solar-system planets, the Moon and five famous exoplanets — compared on radius, gravity, year length and escape velocity.</p>
+          </div>
+        </div>
+        <div class="mc-row">
+          <select class="mc-select" id="mcWorldA" style="flex:1"></select>
+          <button class="mc-btn ghost" id="mcSwap" title="Swap the two worlds">⇄ Swap</button>
+          <select class="mc-select" id="mcWorldB" style="flex:1"></select>
+        </div>
+        <div class="mc-vs">
+          <div class="mc-world">
+            <div class="mc-orb" id="mcOrbA"></div>
+            <h4 id="mcNameA">Earth</h4><div class="t" id="mcTypeA">—</div>
+            <p class="mc-note" id="mcFactA" style="margin-top:.5rem"></p>
+            <button class="mc-fav-btn" id="mcFavA" data-fav="earth" title="Save world A as a favourite" style="margin-top:.6rem">☆</button>
+          </div>
+          <div class="mc-vs-badge">VS</div>
+          <div class="mc-world">
+            <div class="mc-orb" id="mcOrbB"></div>
+            <h4 id="mcNameB">Jupiter</h4><div class="t" id="mcTypeB">—</div>
+            <p class="mc-note" id="mcFactB" style="margin-top:.5rem"></p>
+            <button class="mc-fav-btn" id="mcFavB" data-fav="jupiter" title="Save world B as a favourite" style="margin-top:.6rem">☆</button>
+          </div>
+        </div>
+        <div class="mc-bars" id="mcBars"></div>
+        <div class="mc-verdict" id="mcVerdict"></div>
+      </article>
+
+      <!-- Light-Travel Calculator -->
+      <article class="mc-card wide">
+        <div class="mc-head">
+          <div>
+            <div class="mc-kicker">Relativity You Can Feel · c = 299,792 km/s</div>
+            <h3 class="mc-title">How Long Does the Trip Take? (আলোর ভ্রমণ সময়)</h3>
+            <p class="mc-sub">Choose a destination and compare the journey at light-speed, on our fastest spacecraft, and on a passenger jet.</p>
+          </div>
+          <button class="mc-fav-btn" id="mcFavDest" data-fav="core" title="Save this destination as a favourite">☆</button>
+        </div>
+        <div class="mc-row">
+          <select class="mc-select" id="mcDest" style="flex:1"></select>
+        </div>
+        <div class="mc-out">
+          <div class="mc-big" id="mcTravelTitle">Earth → Galactic Core</div>
+          <div class="mc-mono" id="mcTravelDist" style="margin-top:.3rem">—</div>
+          <div class="mc-times">
+            <div class="mc-time"><div class="l">☀️ At Light-Speed</div><div class="v" id="mcTLight">—</div></div>
+            <div class="mc-time"><div class="l">🛰️ Voyager 1 · 17 km/s</div><div class="v" id="mcTVoyager">—</div></div>
+            <div class="mc-time"><div class="l">☄️ Parker Solar Probe · 192 km/s</div><div class="v" id="mcTParker">—</div></div>
+            <div class="mc-time"><div class="l">✈️ Passenger Jet · 900 km/h</div><div class="v" id="mcTJet">—</div></div>
+          </div>
+        </div>
+        <p class="mc-note">Nothing with mass can reach light-speed — these are the honest physics of distance. Voyager 1's distance is its approximate 2026 position and grows by ~3.5 AU every year.</p>
+      </article>
+    </div>
+  </section>
+
   <!-- Section 6: Quiz -->
   <section class="section-container" id="quiz">
     <div class="section-header">
@@ -1513,7 +1649,7 @@
       </div>
       <div>
         <h5 style="color: var(--cyan-neon); font-size: 0.78rem; text-transform: uppercase; margin-bottom: 0.8rem;">COORDINATES</h5>
-        <p style="color: var(--text-muted); font-size: 0.82rem; line-height: 1.8;">RA 17h 45m 40s<br>Dec -29° 00' 28"<br>&copy; 2026 Milky Way Project</p>
+        <p style="color: var(--text-muted); font-size: 0.82rem; line-height: 1.8;">RA 17h 45m 40s<br>Dec -29° 00' 28"<br>&copy; 2026 Milky Way Project<div class="v3-footer-note">COSMIC ODYSSEY v3.0 · AURORA OBSERVATORY EDITION</div></p>
       </div>
     </div>
   </footer>
@@ -4310,6 +4446,11 @@
       }
 
       nextBtn.addEventListener('click', () => {
+        if (nextBtn.dataset.restart === '1') {
+          delete nextBtn.dataset.restart;
+          nextBtn.textContent = currentLang === 'en' ? "Next →" : "পরবর্তী →";
+          currentIdx = 0; score = 0; loadQuestion(); return;
+        }
         currentIdx++;
         if (currentIdx < questions.length) loadQuestion();
         else {
@@ -4323,7 +4464,9 @@
           qFeedback.textContent = score >= 3 
             ? (currentLang === 'en' ? "Rank: 🎖️ Galactic Astrophysicist!" : "পদবী: 🎖️ মহাজাগতিক জ্যোতির্বিজ্ঞানী!")
             : (currentLang === 'en' ? "Rank: 🔭 Deep Space Explorer!" : "পদবী: 🔭 গভীর মহাকাশ অনুসন্ধানকারী!");
-          nextBtn.style.display = 'none';
+          nextBtn.textContent = currentLang === 'en' ? "↻ Play Again" : "↻ আবার খেলুন";
+          nextBtn.style.display = 'inline-block';
+          nextBtn.dataset.restart = '1';
         }
       });
 
@@ -5581,5 +5724,16 @@
       renderCards();
     })();
   </script>
+  <!-- v3 chrome: scroll progress, back-to-top, command palette -->
+  <div id="v3Progress"></div>
+  <button id="v3TopBtn" title="Back to top" aria-label="Back to top">↑</button>
+  <div class="pal-overlay" id="palOverlay" role="dialog" aria-modal="true" aria-label="Search the observatory">
+    <div class="pal-box">
+      <input class="pal-input" id="palInput" type="text" placeholder="Search worlds, systems, tools… try &quot;Mars&quot;" autocomplete="off" />
+      <div class="pal-list" id="palList"></div>
+      <div class="pal-foot"><span>↑↓ Navigate</span><span>↵ Open</span><span>ESC Close</span><span>Ctrl / Cmd + K</span></div>
+    </div>
+  </div>
+  <script src="js/mission-control.js"></script>
 </body>
 </html>

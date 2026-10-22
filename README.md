@@ -1,4 +1,4 @@
-# 🌌 Cosmic Odyssey: The Milky Way Galaxy | আকাশগঙ্গা ছায়াপথ
+# 🌌 Cosmic Odyssey v3 — Aurora Observatory: The Milky Way Galaxy | আকাশগঙ্গা ছায়াপথ
 
 > An interactive 3D WebGL astronomy portal featuring a 3-tier deep cosmic zoom: Galaxy ➔ Solar System ➔ Planets & Moons, plus a photorealistic Sagittarius A* Black Hole simulator with General Relativity visualization in both **English** and **Bengali (বাংলা)**.
 
@@ -53,6 +53,19 @@
 
 ---
 
+## ✨ What's New in v3 — Aurora Observatory Edition
+
+- **Mission Control (new section)** — four working instruments on real published data:
+  - **Tonight's Sky** — the Moon's phase, illumination, age and next full moon, *calculated live* from the synodic cycle for your selected observing city (Dhaka by default), drawn on a canvas moon, plus a seasonal Milky Way core-visibility guide.
+  - **Planet Comparator** — 14 real worlds (8 planets, the Moon, Proxima b, TRAPPIST-1e, Kepler-186f/452b, HD 189733b) compared side-by-side with animated radius / gravity / year-length / escape-velocity bars and a plain-language verdict.
+  - **Gravity & Weight Simulator** — enter your Earth weight and see your weight, jump height and escape velocity on any world.
+  - **Light-Travel Calculator** — honest travel times to 10 destinations at light-speed, on Voyager 1, on the Parker Solar Probe, and on a passenger jet.
+- **Command Palette (Ctrl / Cmd + K)** — keyboard-first search across sections, star systems, worlds and actions (language, audio, warp mode).
+- **Favourites** — star any world or destination; saved in `localStorage` and always one tap away.
+- **Aurora design system** (`css/aurora.css`) — layered glass instrument panels, aurora gradient accents, animated stat counters, scroll-progress bar, reveal-on-scroll, shrink-on-scroll navbar, back-to-top, focus-visible states and `prefers-reduced-motion` support.
+- **Fixes** — the quiz can now be replayed after completion (it was a dead end in v2); the server now gzip-compresses text assets, sends ETag / cache headers and basic security headers.
+- **Structure** — v3 features live in their own files (`css/aurora.css`, `js/mission-control.js`) instead of growing the single-file engine, so each system can evolve independently.
+
 ## 🛠️ Tech Stack
 
 | Layer | Technologies |
@@ -71,8 +84,11 @@
 website/
 ├── .gitignore          # Excludes OS artifacts, logs, node_modules, and .vercel
 ├── index.html          # Core WebGL application, 3D scenes, shaders, and UI
+├── css/
+│   └── aurora.css       # v3 Aurora Observatory design system + Mission Control styles
 ├── js/
 │   ├── OrbitControls.js # Camera controls for interactive 3D navigation
+│   ├── mission-control.js # v3 features: Tonight's Sky, Comparator, Gravity, Light-Travel, Palette, Favourites
 │   └── three.min.js     # Three.js 3D rendering library
 ├── package.json        # Project metadata and run scripts
 ├── README.md           # Project documentation and deployment guide
