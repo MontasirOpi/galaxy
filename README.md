@@ -53,6 +53,13 @@
 
 ---
 
+## 🔧 v3.1 — Responsive & Design Fix Release
+
+- **Real-browser audit** (Chromium at 360 / 390 / 768 / 1024 / 1366 / 1920 px) found and fixed: the navbar overflowed the screen on phones (language/audio buttons were off-screen) and at laptop widths; below ~1440 px the nav now collapses into a working **hamburger menu** (it previously just vanished under 768 px, leaving no navigation at all).
+- **System view rebuilt for small/short screens**: the planet manifest card no longer floats over the bottom controls or past the viewport — the HUD scrolls as one clean column, and the galaxy HUD now fades out while a system is open (the two HUDs used to bleed through each other).
+- **Every section tightened**: sane mobile paddings for the black-hole lab, scale, quiz and address panels; black-hole canvas height adapts (480 → 340/290 px); NASA grid no longer overflows 320 px screens; spiral-arm tabs wrap; 38 px minimum touch targets; stat cards got the glass-card treatment.
+- Result: **zero horizontal overflow and zero layout overlaps at all six audited sizes**, verified with screenshots before/after.
+
 ## ✨ What's New in v3 — Aurora Observatory Edition
 
 - **Mission Control (new section)** — four working instruments on real published data:

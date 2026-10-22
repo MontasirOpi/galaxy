@@ -1,6 +1,6 @@
 {
   "name": "cosmic-odyssey-astronomy-portal",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Cosmic Odyssey v3 \u2014 Aurora Observatory: interactive 3D Solar System & photorealistic Sagittarius A* black hole simulator, NASA archive, and Mission Control tools (live moon phase, planet comparator, gravity simulator, light-travel calculator, command palette, favourites)",
   "main": "server.js",
   "scripts": {

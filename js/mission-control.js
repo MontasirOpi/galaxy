@@ -342,3 +342,33 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+/* v3.1 mobile navigation — appended module (kept separate from the v3 block
+   above so the diff stays reviewable). Builds the slide-down menu from the
+   desktop nav links so the two can never drift apart. */
+(function () {
+  'use strict';
+  function initBurger() {
+    var burger = document.getElementById('v3Burger');
+    var menu = document.getElementById('v3MobileMenu');
+    var links = document.querySelector('.nav-links');
+    if (!burger || !menu || !links) return;
+    menu.innerHTML = '';
+    Array.prototype.forEach.call(links.querySelectorAll('a'), function (a) {
+      var clone = document.createElement('a');
+      clone.href = a.getAttribute('href');
+      clone.textContent = a.textContent;
+      clone.addEventListener('click', close);
+      menu.appendChild(clone);
+    });
+    function close() { menu.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+    burger.addEventListener('click', function () {
+      var open = menu.classList.toggle('open');
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 1440) close(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initBurger); else initBurger();
+})();

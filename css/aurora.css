@@ -185,3 +185,202 @@ body::before{
   .v3-reveal{opacity:1;transform:none;transition:none}
   html{scroll-behavior:auto}
 }
+
+/* ==========================================================================
+   v3.1 — RESPONSIVE OVERHAUL + DESIGN POLISH
+   Fixes confirmed by a full CSS audit of the v2/v3 layout:
+   - Nav links vanished below 768px with NO menu at all, and the bar was
+     overcrowded (brand + 10 links + 4 action buttons) up to ~1250px.
+   - The system-view HUD (planet card + controls) could not scroll on small
+     screens, so controls were clipped; at 769–992px the card floated over
+     the bottom controls.
+   - Fixed 3–3.5rem paddings inside cards (black hole, scale, quiz, address)
+     crushed content on phones; the NASA grid's 280px minimum overflowed
+     on 320px screens; black-hole canvas was a fixed 480px tall.
+   ========================================================================== */
+
+html,body{overflow-x:clip}
+img,canvas,svg,video{max-width:100%}
+.hero-container{height:100vh;height:100dvh}
+
+/* --- stat cards were bare text: give them the glass card treatment -------- */
+.stat-card{background:linear-gradient(165deg,rgba(13,22,46,.75),rgba(5,9,22,.85));
+  border:1px solid var(--v3-line);border-radius:16px;padding:1.15rem .8rem}
+
+/* --- hamburger + mobile menu (markup injected in index.html) --------------- */
+.v3-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;
+  padding:10px;background:rgba(56,189,248,.08);border:1px solid var(--v3-line-bright);border-radius:12px;cursor:pointer;flex:none}
+.v3-burger span{display:block;height:2px;border-radius:2px;background:#7dd3fc;transition:transform .25s ease,opacity .25s ease}
+.v3-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.v3-burger.open span:nth-child(2){opacity:0}
+.v3-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.v3-mobile-menu{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;gap:.2rem;
+  padding:.8rem 1rem 1.1rem;background:rgba(3,6,17,.97);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--v3-line-bright);box-shadow:0 30px 50px rgba(0,0,0,.6)}
+.v3-mobile-menu.open{display:flex}
+.v3-mobile-menu a{color:#e2e8f0;text-decoration:none;font-family:var(--font-display);font-weight:600;font-size:1rem;
+  padding:.72rem .8rem;border-radius:12px;border:1px solid transparent}
+.v3-mobile-menu a:hover,.v3-mobile-menu a:active{background:rgba(56,189,248,.1);border-color:var(--v3-line);color:#7dd3fc}
+
+/* --- navbar compaction ------------------------------------------------------ */
+@media (max-width:1380px){ .nav-links{gap:.85rem} .nav-links a{font-size:.82rem} }
+@media (max-width:1440px){
+  .nav-links{display:none!important}
+  .v3-burger{display:flex}
+  .navbar{gap:.6rem}
+}
+@media (max-width:900px){
+  .nasa-nav-btn span[data-i18n]{display:none}
+  .nasa-nav-btn{padding:.35rem .55rem}
+}
+@media (max-width:680px){
+  .navbar{padding:.55rem .8rem}
+  .nav-brand{font-size:1.02rem;gap:.5rem}
+  .brand-icon{width:25px;height:25px}
+  .nav-actions{gap:.4rem}
+  .nasa-nav-btn{display:none}
+  .audio-btn #audioStatusText{display:none}
+  .audio-btn{padding:.4rem .55rem}
+  .lang-toggle-btn{padding:.32rem .6rem;font-size:.76rem}
+  .v3-search-btn{padding:.38rem .55rem}
+  .v3-search-btn span:nth-child(2){display:none}
+}
+
+/* --- hero HUD ---------------------------------------------------------------- */
+@media (max-width:900px){
+  .hud-top-telemetry .telemetry-badge:nth-child(3){display:none}
+  .system-selector-label{display:none}
+  .system-selector-bar{border-radius:16px;padding:.4rem .5rem;width:100%}
+}
+@media (max-width:768px){
+  .hero-container{min-height:620px}
+  .hud-bottom-controls{flex-direction:column;align-items:stretch}
+  .controls-panel{flex-wrap:wrap;justify-content:center;width:100%}
+  .interaction-hint{display:none}
+  .view-btn,.warp-btn{min-height:38px;display:inline-flex;align-items:center}
+}
+@media (max-width:520px){
+  #canvas-fps-badge{display:none}
+  .telemetry-badge{font-size:.66rem;padding:.32rem .6rem}
+  .system-pill-btn{font-size:.7rem;padding:.3rem .6rem}
+}
+
+/* --- system view (Tier 2/3): make it scroll, un-float the card -------------- */
+@media (max-width:992px){
+  .system-view-hud{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4.8rem 1rem 1.2rem;gap:1rem}
+  .sys-top-bar{flex-wrap:wrap}
+  .sys-breadcrumb-box{max-width:100%;width:100%}
+  .planet-manifest-card{position:static!important;width:100%!important;max-width:560px;margin:0 auto}
+  .sys-bottom-controls{margin-top:.4rem}
+  .sys-exit-btn{min-height:42px}
+}
+@media (max-width:768px){
+  .sys-sim-controls{justify-content:flex-start}
+  .epoch-control-group{flex-wrap:wrap;width:100%}
+  .epoch-slider{flex:1;min-width:110px;width:auto}
+  .sim-btn,.epoch-btn,.planet-btn-item{min-height:38px;display:inline-flex;align-items:center}
+  .manifest-spec-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:480px){
+  .sys-title{font-size:1.12rem}
+  .planet-manifest-card{padding:1rem}
+  .manifest-name{font-size:1.15rem}
+  .telemetry-hud-metrics{grid-template-columns:1fr 1fr}
+}
+
+/* --- sections: sane padding + card consistency ------------------------------- */
+@media (max-width:992px){
+  .section-container{padding:4.2rem 1.4rem}
+  .section-header{margin-bottom:2.4rem}
+  .blackhole-hero{padding:2.1rem 1.5rem}
+  .solar-address-container,.scale-box,.quiz-container{padding:2rem 1.5rem}
+}
+@media (max-width:640px){
+  .section-container{padding:3.4rem 1.05rem}
+  .blackhole-hero{padding:1.5rem 1rem;border-radius:20px}
+  .solar-address-container,.scale-box,.quiz-container{padding:1.5rem 1.05rem;border-radius:18px}
+  .stats-strip{padding:1.4rem 1rem}
+  .stat-value{font-size:1.75rem}
+  .site-footer{padding:3rem 1.1rem 1.6rem}
+  .quiz-option{padding:.85rem .95rem;font-size:.9rem}
+  .anatomy-interactive-view{padding:1.1rem;min-height:320px}
+  .pin-label{font-size:.62rem;max-width:118px;white-space:normal;text-align:center}
+  .arm-spec-grid{grid-template-columns:1fr}
+  .arms-nav-tabs{display:flex;flex-wrap:wrap;gap:.5rem}
+  .arm-tab-btn{flex:1 1 42%}
+  #scale .scale-box div[style*="space-between"]{flex-wrap:wrap;gap:.35rem .7rem;font-size:.62rem!important}
+  .scale-display-panel{padding:1.2rem}
+  .dynamic-orb{width:108px;height:108px}
+}
+
+/* --- black hole lab ------------------------------------------------------------ */
+@media (max-width:768px){
+  #blackhole-sim-canvas{height:340px}
+  .bh-controls-panel{padding:1rem}
+  .bh-slider-group{width:100%}
+  .bh-slider{flex:1;width:auto}
+  .bh-probe-badge{font-size:.64rem;max-width:calc(100% - 28px)}
+}
+@media (max-width:560px){
+  #blackhole-sim-canvas{height:290px}
+  .bh-stats-row{grid-template-columns:1fr}
+  .bh-stat-item .num{font-size:1.3rem}
+  .bh-preset-btn,.bh-toggle-btn{min-height:36px;display:inline-flex;align-items:center}
+}
+
+/* --- NASA gallery + modal ------------------------------------------------------- */
+.nasa-cards-grid{grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr))}
+@media (max-width:768px){
+  .nasa-modal{padding:.55rem}
+  .nasa-modal-box{height:94dvh}
+  .nasa-modal-info{padding:1.15rem}
+  .nasa-filter-btn{font-size:.68rem;padding:.4rem .8rem;min-height:36px}
+}
+@media (max-width:480px){ .nasa-spec-table{grid-template-columns:1fr} }
+
+/* --- Mission Control responsiveness ---------------------------------------------- */
+@media (max-width:720px){
+  .mc-card{padding:1.15rem}
+  .mc-title{font-size:1.12rem}
+  .mc-card.wide .mc-row{flex-direction:column;align-items:stretch}
+  .mc-card.wide .mc-row .mc-btn{align-self:center}
+  .mc-vs{gap:.7rem}
+  .mc-orb{width:60px;height:60px}
+  .mc-sky{flex-direction:column;align-items:flex-start}
+  #mcMoonCanvas{width:104px;height:104px}
+  .mc-bar-row .va,.mc-bar-row .vb{font-size:.66rem}
+  .pal-overlay{padding-top:7vh}
+  #mcWeight{width:100%!important}
+}
+@media (max-width:420px){
+  .mc-sky-stats{grid-template-columns:1fr 1fr;min-width:0;width:100%}
+  .mc-big{font-size:1.3rem}
+}
+
+/* --- v3.1.1 follow-ups from the screenshot audit -----------------------------
+   At 1366x900 the audit showed the (very tall) planet manifest card floating
+   over the bottom controls and past the viewport bottom. On any screen that
+   is short or mid-width, the system HUD now scrolls as one column and the
+   card joins the flow instead of floating. */
+@media (max-width:1500px), (max-height:950px){
+  .system-view-hud{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .planet-manifest-card{position:static!important;width:min(400px,100%)!important;margin-left:auto}
+  .sys-bottom-controls{margin-top:1rem}
+}
+@media (max-width:992px){
+  .planet-manifest-card{margin:0 auto}
+}
+@media (max-width:640px){
+  .sys-stats-mini{display:none}
+  .sys-breadcrumb-box{padding:.6rem .9rem}
+  .breadcrumbs-line{font-size:.72rem}
+}
+
+/* --- HUD exclusivity: the v2 engine never hid the galaxy HUD when the
+       system view opened, so badges, system pills and the 3D-view panel
+       bled through behind the system panels. Hide it (with a fade) for as
+       long as the system HUD is visible. */
+.hero-hud-overlay{transition:opacity .35s ease}
+.hero-container:has(#systemViewHud.visible) #galaxyHudOverlay{opacity:0;pointer-events:none!important}
+.hero-container:has(#systemViewHud.visible) #galaxyHudOverlay *{pointer-events:none!important}
+@media (max-width:640px){ .sys-spectral-tag{font-size:.6rem;padding:.14rem .45rem} }
